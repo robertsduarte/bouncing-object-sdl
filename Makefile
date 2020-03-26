@@ -1,7 +1,7 @@
 # set the compiler
 CC := clang
 
-# set the compliler flags
+# set the compiler flags
 CFLAGS := `sdl2-config --cflags --libs` -lSDL2_image
 
 # header files
