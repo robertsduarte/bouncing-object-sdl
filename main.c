@@ -7,15 +7,32 @@
 #define SCREEN_HEIGHT (480)
 #define SPEED (300)
 
+void clean_resources(
+        SDL_Window** win,
+        SDL_Renderer** rend,
+        SDL_Texture** tex)
+{
+    SDL_DestroyTexture(*tex);
+    SDL_DestroyRenderer(*rend);
+    SDL_DestroyWindow(*win);
+    SDL_Quit();
+}
+
+
 int main()
 {
+    SDL_Window* window = NULL;
+    SDL_Renderer* renderer = NULL;
+    SDL_Surface* surface = NULL;
+    SDL_Texture* texture = NULL;
+
     if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER) != 0)
     {
         SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
         return 1;
     }
 
-    SDL_Window* window = SDL_CreateWindow(
+    window = SDL_CreateWindow(
             "Bouncing Object",
             SDL_WINDOWPOS_CENTERED,
             SDL_WINDOWPOS_CENTERED,
@@ -29,7 +46,7 @@ int main()
     }
 
     Uint32 render_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC;
-    SDL_Renderer *renderer = SDL_CreateRenderer(window, -1, render_flags);
+    renderer = SDL_CreateRenderer(window, -1, render_flags);
 
     if (!renderer)
     {
@@ -39,7 +56,7 @@ int main()
         return 1;
     }
 
-    SDL_Surface* surface = IMG_Load("img/DVD_logo_green.png");
+    surface = IMG_Load("img/DVD_logo_green.png");
     if (!surface)
     {
         printf("%s\n", SDL_GetError());
@@ -49,7 +66,7 @@ int main()
         return 1;
     }
 
-    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+    texture = SDL_CreateTextureFromSurface(renderer, surface);
     SDL_FreeSurface(surface);
 
     if (!texture)
@@ -139,7 +156,6 @@ int main()
         SDL_Delay(1000/60);
     }
 
-    SDL_DestroyWindow(window);
-    SDL_Quit();
+    clean_resources(&window, &renderer, &texture);
     return 0;
 }
