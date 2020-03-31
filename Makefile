@@ -1,5 +1,5 @@
 # set the compiler
-CC := clang
+CC := gcc
 
 # set the compiler flags
 CFLAGS := `sdl2-config --cflags --libs` -lSDL2_image
